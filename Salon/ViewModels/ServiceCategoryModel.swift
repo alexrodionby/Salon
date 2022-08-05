@@ -12,7 +12,9 @@ class ServiceCategoryModel: ObservableObject {
     
     @Published var serviceCategoryData: [ServiceCategory] = []
     @Published var serviceData: [Service] = []
+    @Published var specialistData: [Specialist] = []
     
+    // Добавляем категорию услуг (не использую на данный момент)
     func addServiceCategory(name: String, categoryID: Int) {
         let db = Firestore.firestore()
         db.collection("ServiceCategory").addDocument(data: ["serviceCategoryName": name, "serviceCategoryID": categoryID]) { error in
@@ -24,6 +26,7 @@ class ServiceCategoryModel: ObservableObject {
         }
     }
     
+    // Удаляем категорию услуг (не использую на данный момент)
     func deleteServiceCategory(serviceToDelete: ServiceCategory) {
         let db = Firestore.firestore()
         db.collection("ServiceCategory").document(serviceToDelete.id).delete { error in
@@ -39,7 +42,7 @@ class ServiceCategoryModel: ObservableObject {
         }
     }
     
-    // Надо доработать эту функцию
+    // Надо доработать эту функцию (нужно передавать то что хотим поменять)
     func updateServiceCategory(serviceToUpdate: ServiceCategory) {
         let db = Firestore.firestore()
         db.collection("ServiceCategory").document(serviceToUpdate.id).setData(["serviceCategoryName": "new name"], merge: true) { error in
@@ -51,6 +54,7 @@ class ServiceCategoryModel: ObservableObject {
         }
     }
     
+    // Возвращаем список всех услуг в категории (одном разделе усуг)
     func getSubService(subServiceName: String, subID: String) {
         let db = Firestore.firestore()
         db.collection("ServiceCategory").document(subID).collection(subServiceName).getDocuments { snapshot, error in
@@ -71,6 +75,7 @@ class ServiceCategoryModel: ObservableObject {
         }
     }
     
+    // Возвращаем все категории услуг
     func getServiceCategory() {
         let db = Firestore.firestore()
         db.collection("ServiceCategory").getDocuments { snapshot, error in
@@ -89,4 +94,26 @@ class ServiceCategoryModel: ObservableObject {
             }
         }
     }
+    
+    // Возвращаем список всех специалистов
+    func getAllSpecialist() {
+        let db = Firestore.firestore()
+        db.collection("Specialists").getDocuments { snapshot, error in
+            if error == nil {
+                if let snapshot = snapshot {
+                    DispatchQueue.main.async {
+                        self.specialistData = snapshot.documents.map { doc in
+                            return Specialist(id: doc.documentID,
+                                              specialistName: doc["specialistName"] as? String ?? "",
+                                              specialistPhotoURL: doc["specialistPhotoURL"] as? String ?? "",
+                                              specialistDescription: doc["specialistDescription"] as? String ?? "")
+                        }
+                    }
+                }
+            } else {
+                print(error?.localizedDescription ?? "Some error")
+            }
+        }
+    }
+    
 }

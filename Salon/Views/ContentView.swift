@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var tabIcons = ["house", "questionmark.circle"]
     
     var body: some View {
+        
         VStack(spacing: 0) {
             ZStack {
                 switch selectedIndexOfTab {
@@ -44,7 +45,6 @@ struct ContentView: View {
                     Spacer()
                 }
             }
-            
         }
         .background(Color("brown1"))
     }
