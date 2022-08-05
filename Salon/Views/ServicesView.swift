@@ -39,7 +39,7 @@ struct ServicesView: View {
                                 
                                 Text("\(index.serviceCategoryName)")
                                     .lineLimit(5)
-                                    .frame(width: 150, height: 100, alignment: .center)
+                                    .frame(width: 150, height: 150, alignment: .center)
                                     .font(.body)
                                     .foregroundColor(Color.white)
                                     .padding()

@@ -14,6 +14,7 @@ struct LogoView: View {
     @State private var logoOpacity = 0.5
     
     var body: some View {
+        
         if logoIsActive {
             ContentView()
         } else {
